@@ -1,0 +1,35 @@
+stages: [setup, analyze, publish]
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip
+
+setup:
+  stage: setup
+  image: python:3.11-slim
+  script:
+    - python --version
+    - pip install -r requirements.txt
+  artifacts:
+    paths:
+      - .cache/pip
+    expire_in: 1 week
+
+analyze:
+  stage: analyze
+  image: python:3.11-slim
+  needs: [setup]
+  script:
+    - mkdir -p out
+    - python parse_versions.py devices.csv
+  artifacts:
+    when: always
+    paths:
+      - out/mismatch.csv
+      - out/summary.png
+    expire_in: 2 weeks
+
+# 可选：计划任务（CI/CD → Schedules 里配置即可）
