@@ -1,0 +1,4 @@
+device,target_version,current_version,ok
+MPC-01,1.2.3,1.0.0,False
+APP-03,4.1.0,4.0.2,False
+MCU-04,2.0.0,1.9.9,False
